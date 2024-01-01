@@ -1,0 +1,1193 @@
+1.Write Java program to 
+Create a collection of contact lists (contact number and name)
+Accept missed calls from the user and store them in another list. If the caller details 
+exist in the contact list , retrieve the caller details else store as “private caller”. Store 
+them in the order . 
+User can trace the missed call list and display them if required.
+Delete the number if user specifies a number to delete.
+Write main program to test the class.
+####################################################################################################################################
+import java.util.*;
+class DataBaseCallers
+{
+    public static HashMap<Long,String> contacts=new HashMap<Long,String>();
+    static void createEntry()
+    {
+        contacts.put(new Long("9900726035"),"Ronaldo");
+        contacts.put(new Long("9741278570"),"Messi");
+        contacts.put(new Long("7255554444"),"Deepika");
+        contacts.put(new Long("9700001111"),"Kaka");
+    }
+    static void display()
+    {
+        System.out.println("***************DataBaseCallers*****************");
+        System.out.println(contacts);
+        
+    }
+}
+
+class MissedCallDetails
+{
+    Calendar cal;
+    Long telno;
+    String name;
+    MissedCallDetails(Calendar x,Long y,String z)
+    {
+        cal=x;
+        telno=y;
+        name=z;
+    }
+    void display()
+    {
+        System.out.println("Current time ="+cal.getTime());
+        System.out.println("Telephone Number="+telno);
+        System.out.println("Name is="+name);
+    }
+}
+
+public class Main
+{
+    static LinkedList<MissedCallDetails> amiss=new LinkedList<MissedCallDetails>();
+	public static void main(String[] args) 
+	{
+	    //MissedCallDetails ob=new MissedCallDetails(Calendar.getInstance(),new Long("9741278570"),"Ronaldo");
+	    //ob.display();
+	    DataBaseCallers.createEntry();
+	    DataBaseCallers.display();
+	     
+	    while(true)
+	    {   
+	        Scanner read=new Scanner(System.in);
+	        System.out.println("Enter ur a Choice");
+	        System.out.println("1: add miss call \n2: Delete based on number \n3: display \n4: exit");
+	        int ch=read.nextInt();
+	        switch(ch)
+	        {
+	            case 1:
+	                    System.out.println("Enter the missed call telephone number details");
+	                    Calendar cal=Calendar.getInstance();
+	                    System.out.println("Enter telephone number=");
+	                    Long telnox=read.nextLong();
+	                    String name;
+	                    if(DataBaseCallers.contacts.containsKey(telnox))
+	                    {
+	                        name=DataBaseCallers.contacts.get(telnox);
+	                    }
+	                    else
+	                    {
+	                        name="Private caller";
+	                    }
+	                    //System.out.println("Enter caller name=");
+	                    //String name=read.next();
+	                    MissedCallDetails ob=new MissedCallDetails(cal,telnox,name);
+	                    if(amiss.size()==4)
+	                    {
+	                        amiss.removeLast();
+	                    }
+	                    amiss.addFirst(ob);
+	                    System.out.println("************MissedCallDetails********************");
+	                    Iterator<MissedCallDetails> it = amiss.iterator();
+                        while(it.hasNext()) 
+                        {
+                                MissedCallDetails i = it.next();
+                                System.out.println("----------------------------");
+                                i.display();
+                        }
+                        break;
+                case 2: 
+                        System.out.println("Enter number Delete in MissedCallDetails");
+                        Long phonenum=read.nextLong();
+                        Iterator <MissedCallDetails> it2= amiss.iterator();
+                        boolean flag=false;
+                        while(it2.hasNext())
+                        {
+                              MissedCallDetails ob2=it2.next();
+                              if(ob2.telno==phonenum)
+                              {
+                                  flag=true;
+                                  amiss.remove(ob2);
+                                  break;
+                              }
+                        }
+                        if(flag==true)
+                        {
+                            System.out.println("phone number deleted");
+                        }
+                        else
+                        {
+                            System.out.println("phone number not exists list");
+                        }
+                        break;
+                    
+                    
+                case 3:
+                        System.out.println("............MissedCallDetails...............");
+                        Iterator<MissedCallDetails> it1 = amiss.iterator();
+                        while(it1.hasNext()) 
+                        {
+                                MissedCallDetails i = it1.next();
+                                System.out.println("----------------------------");
+                                i.display();
+                        }
+                        break;
+                
+                default:
+                            return;
+      
+    
+	        }
+	    }
+		
+	} 
+}
+2.2. Write a Java program using user-defined storage classes to create a book database and 
+store it in a Collection List. Books collection should include title, author, publisher and 
+price. 
+Write method to sort the books in ascending order of price and store it in another List. 
+Maintain the book details with respect to an unique book id. 
+Prompt for an author name and list all the books with the same author’s name. 
+Create a new list holding all the book details with price greater than a user specified 
+price. 
+For a given value by the user, find all the books that match either the whole or a part 
+of the book title. 
+Identify a publisher and print books from a particular publisher. Update the publisher 
+details based on a title.
+
+######################################################################################################
+import java.util.*;
+class BOOK
+{
+    String title,author,publisher;
+    double price;
+    BOOK(String x, String y, String z,double p)
+    {
+        title=x;
+        author=y;
+        publisher=z;
+        price=p;
+    }
+    public String toString()
+    {
+        return title+"    "+author+"   "+publisher+"   "+price;
+    }
+}
+
+class BookCompare implements Comparator<BOOK>
+{
+    public int compare(BOOK b1, BOOK b2)
+    {
+        if(b1.price>b2.price)
+        {
+            return 1;
+        }
+        else if(b1.price==b2.price)
+        {
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+} 
+public class Main
+{
+	public static void main(String[] args) 
+	{
+	    BOOK ob1= new BOOK("T1","A1","P1",780);
+	    BOOK ob2= new BOOK("T2","A2","P2",500);
+	    BOOK ob3= new BOOK("oops with java","A3","P3",800);
+	    BOOK ob4= new BOOK("T4","A1","P4",300);
+	    BOOK ob5= new BOOK("oops with c++","A4","P5",200);
+	    ArrayList <BOOK> Ar=new ArrayList<BOOK>();
+	    Ar.add(ob1);
+	    Ar.add(ob2);
+	    Ar.add(ob3);
+	    Ar.add(ob4);
+	    Ar.add(ob5);
+	    
+	    System.out.println("................Book List ......................");
+	    for(BOOK ob:Ar)
+	    {
+	        System.out.println(ob);
+	    }
+	    Collections.sort(Ar,new BookCompare());
+	    System.out.println("................Book List after sorted price list......................");
+	    for(BOOK ob:Ar)
+	    {
+	        System.out.println(ob);
+	    }
+	    
+	    
+	    System.out.println("--------------Create a hashmap with unique book id-------");
+	    HashMap<Integer,BOOK> hm=new HashMap<Integer,BOOK>();
+	    Integer i=101;
+	    for(BOOK ob:Ar)
+	    {
+	        hm.put(i,ob);
+	        i++;
+	    }
+	    for (Integer keyid : hm.keySet()) 
+	    {
+            System.out.print("keyId: " + keyid ) ;
+            System.out.println( "  " + hm.get(keyid));
+        }
+        System.out.println("--------------Search given author and display-------");
+        Scanner read= new Scanner(System.in);
+        System.out.println("Enter author name: ");
+        String name=read.nextLine();
+		for(BOOK ob:Ar)
+		{
+		    if(name.equals(ob.author))
+		    {
+		        System.out.println(ob);
+		    }
+		}
+		System.out.println("--------------create new list <price more then user specified price>-------");
+		LinkedList<BOOK> temp = new LinkedList<BOOK>();
+		//Scanner read= new Scanner(System.in);
+        System.out.println("Enter book price: ");
+        double rate=read.nextDouble();
+		for(BOOK ob:Ar)
+	    {
+	        if(ob.price>rate)
+	        {
+	            temp.add(ob);
+	            System.out.println(ob);
+	            
+	        }
+	    }
+	    System.out.println("--------------search publisher and update-------");
+		System.out.println("Enter book publisher name: ");
+		Scanner rd=new Scanner(System.in);
+        String pname=rd.nextLine();
+		for(BOOK ob:Ar)
+	    {   
+	        
+	        if(pname.equals(ob.publisher))
+		    {
+		        System.out.println(ob);
+		    }
+	    } 
+	    System.out.println("--------all the books that match either the whole or a part of the book title--------");
+	    
+	    Scanner sc=new Scanner(System.in);
+	    System.out.println("Enter intested area");
+	    String y=sc.nextLine();
+	    int flag=0;
+	    for(BOOK ob:Ar)
+	    {   
+	        if(ob.title.contains(y))
+            {   flag=1;
+                
+                System.out.println(ob);
+             }
+	        
+	    }
+	    if(flag==0)
+	    {
+	       System.out.println("title not matches "); 
+	    }
+	    System.out.println("--------------search title  and update publisher name-------");
+		System.out.println("Enter book title name: ");
+		Scanner rd1=new Scanner(System.in);
+        String tname=rd1.nextLine();
+		for(BOOK ob:Ar)
+	    {   
+	        
+	        if(tname.equals(ob.title))
+		    {
+		        System.out.println(ob);
+		        System.out.println("enter new publisher name");
+		        String pname1=rd1.nextLine();
+		        ob.publisher=pname1;
+		        System.out.println(ob);
+		    }
+	    } 
+	    
+		
+	}
+}
+
+import java.util.*;
+class BOOK
+{
+    String title,author,publisher;
+    double price;
+    BOOK(String x, String y, String z,double p)
+    {
+        title=x;
+        author=y;
+        publisher=z;
+        price=p;
+    }
+    public String toString()
+    {
+        return title+"    "+author+"   "+publisher+"   "+price;
+    }
+}
+
+class BookCompare implements Comparator<BOOK>
+{
+    public int compare(BOOK b1, BOOK b2)
+    {
+        if(b1.price>b2.price)
+        {
+            return 1;
+        }
+        else if(b1.price==b2.price)
+        {
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+} 
+public class Main
+{
+	public static void main(String[] args) 
+	{
+	    BOOK ob1= new BOOK("T1","A1","P1",780);
+	    BOOK ob2= new BOOK("T2","A2","P2",500);
+	    BOOK ob3= new BOOK("oops with java","A3","P3",800);
+	    BOOK ob4= new BOOK("T4","A1","P4",300);
+	    BOOK ob5= new BOOK("oops with c++","A4","P5",200);
+	    ArrayList <BOOK> Ar=new ArrayList<BOOK>();
+	    Ar.add(ob1);
+	    Ar.add(ob2);
+	    Ar.add(ob3);
+	    Ar.add(ob4);
+	    Ar.add(ob5);
+	    
+	    System.out.println("................Book List ......................");
+	    for(BOOK ob:Ar)
+	    {
+	        System.out.println(ob);
+	    }
+	    Collections.sort(Ar,new BookCompare());
+	    System.out.println("................Book List after sorted price list......................");
+	    for(BOOK ob:Ar)
+	    {
+	        System.out.println(ob);
+	    }
+	    
+	    
+	    System.out.println("--------------Create a hashmap with unique book id-------");
+	    HashMap<Integer,BOOK> hm=new HashMap<Integer,BOOK>();
+	    Integer i=101;
+	    for(BOOK ob:Ar)
+	    {
+	        hm.put(i,ob);
+	        i++;
+	    }
+	    for (Integer keyid : hm.keySet()) 
+	    {
+            System.out.print("keyId: " + keyid ) ;
+            System.out.println( "  " + hm.get(keyid));
+        }
+        System.out.println("--------------Search given author and display-------");
+        Scanner read= new Scanner(System.in);
+        System.out.println("Enter author name: ");
+        String name=read.nextLine();
+		for(BOOK ob:Ar)
+		{
+		    if(name.equals(ob.author))
+		    {
+		        System.out.println(ob);
+		    }
+		}
+		System.out.println("--------------create new list <price more then user specified price>-------");
+		LinkedList<BOOK> temp = new LinkedList<BOOK>();
+		//Scanner read= new Scanner(System.in);
+        System.out.println("Enter book price: ");
+        double rate=read.nextDouble();
+		for(BOOK ob:Ar)
+	    {
+	        if(ob.price>rate)
+	        {
+	            temp.add(ob);
+	            System.out.println(ob);
+	            
+	        }
+	    }
+	    System.out.println("--------------search publisher and update-------");
+		System.out.println("Enter book publisher name: ");
+		Scanner rd=new Scanner(System.in);
+        String pname=rd.nextLine();
+		for(BOOK ob:Ar)
+	    {   
+	        
+	        if(pname.equals(ob.publisher))
+		    {
+		        System.out.println(ob);
+		    }
+	    } 
+	    System.out.println("--------all the books that match either the whole or a part of the book title--------");
+	    
+	    Scanner sc=new Scanner(System.in);
+	    System.out.println("Enter intested area");
+	    String y=sc.nextLine();
+	    int flag=0;
+	    for(BOOK ob:Ar)
+	    {   
+	        if(ob.title.contains(y))
+            {   flag=1;
+                
+                System.out.println(ob);
+             }
+	        
+	    }
+	    if(flag==0)
+	    {
+	       System.out.println("title not matches "); 
+	    }
+	    System.out.println("--------------search title  and update publisher name-------");
+		System.out.println("Enter book title name: ");
+		Scanner rd1=new Scanner(System.in);
+        	String tname=rd1.nextLine();
+		for(BOOK ob:Ar)
+	    {   
+	        
+	        if(tname.equals(ob.title))
+		    {
+		        System.out.println(ob);
+		        System.out.println("enter new publisher name");
+		        String pname1=rd1.nextLine();
+		        ob.publisher=pname1;
+		        System.out.println(ob);
+		    }
+	    } 
+	    
+		
+	}
+}
+3.Create a desktop java application using swings to enable an user to enter student 
+information such as name, usn, age, address, sgpa of 8 semesters, category.
+Perform validations on age and sgpa. Display appropriate messages in pop up boxes to 
+indicate wrong entries,.
+On clicking of the “compute” button, find the cgpa based on the obtained sgpa’s. 
+On clicking of the “done” button, place the student details in a collection.
+A click on the “display” button should display the collection in a textarea.
+##################################################################################################################
+
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.*;
+
+class STUDENT1
+{
+	String name,usn,address,category;
+	int age;
+	double sg1,sg2,sg3,sg4,sg5,sg6,sg7,sg8,cgpa;
+	
+	STUDENT1(String a,String b,String c,String d,int e,double s1,double s2,double s3, double s4,double s5,double s6,double s7,double s8)
+	{ 
+		name=a; usn=b; address=c; category=d; age=e;  
+		sg1=s1; sg2=s2; sg3=s3; sg4=s4; sg5=s5; sg6=s6; sg7=s7; sg8=s8;
+		
+		
+	}
+	
+	public String toString()
+	{
+		return name+"  "+usn+"  "+address+"  "+category+"   "+age+"    CGPA="+cgpa ;
+		  
+	}                                            
+}
+
+public class GUI1 implements ActionListener{
+	static JFrame f1=new JFrame("STUDENT INFO");
+	static JLabel label1=new JLabel("ENTER NAME");
+	static JLabel label2=new JLabel("ENTER USN");
+	static JLabel label3=new JLabel("ENTER ADDRESS");
+	static JLabel label4=new JLabel("ENTER CATEGORY");
+	static JLabel label5=new JLabel("ENTER AGE");
+	static JLabel label6=new JLabel("ENTER SGPA1");
+	static JLabel label7=new JLabel("ENTER SGPA2");
+	static JLabel label8=new JLabel("ENTER SGPA3");
+	static JLabel label9=new JLabel("ENTER SGPA4");
+	static JTextField tname=new JTextField(20);
+	static JTextField tusn=new JTextField(20);
+	static JTextField taddr=new JTextField(20);
+	static JTextField tcat=new JTextField(20);
+	static JTextField tage=new JTextField(10);
+	static JTextField sgpa1=new JTextField(5);
+	static JTextField sgpa2=new JTextField(5);
+	static JTextField sgpa3=new JTextField(5);
+	static JTextField sgpa4=new JTextField(5);
+	static JButton submit=new JButton("submit");
+	static JButton done=new JButton("done");
+	static JButton display=new JButton("display");
+	static ArrayList<STUDENT1> AA=new ArrayList<STUDENT1>();
+	public static void main(String[] args)
+	{
+		f1.setSize(900, 800);
+		f1.setLayout(new GridLayout(2,2));
+		f1.setVisible(true);
+		f1.add(label1);
+		f1.add(tname);
+		f1.add(label2);
+		f1.add(tusn);
+		f1.add(label3);
+		f1.add(taddr);
+		f1.add(label4);
+		f1.add(tcat);
+		f1.add(label5);
+		f1.add(tage);
+		f1.add(label6);
+		f1.add(sgpa1);
+		f1.add(label7);
+		f1.add(sgpa2);
+		f1.add(label8);
+		f1.add(sgpa3);
+		f1.add(label9);
+		f1.add(sgpa4);
+		f1.add(submit);
+		f1.add(done);
+		f1.add(display);
+		submit.addActionListener(new GUI1());	
+		done.addActionListener(new GUI1());
+		display.addActionListener(new GUI1());
+
+	}
+		
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource()==submit)
+		{
+			int age=Integer.parseInt(tage.getText());
+			if(18>age||age>30)
+			{
+				System.out.println("invalide age");
+				String temp=JOptionPane.showInputDialog(null,"Enter valid age 18 to 30=");
+				tage.setText(temp);
+			}
+			else
+			{
+				System.out.println("valide age");
+				System.out.println("its working");
+			}
+			check(1,sgpa1);
+			check(2,sgpa2);
+			check(3,sgpa3);
+			check(4,sgpa4);
+			
+		}
+		else if(e.getSource()==done)
+		{
+
+			double s1=Double.parseDouble(sgpa1.getText());
+			double s2=Double.parseDouble(sgpa1.getText());
+			double s3=Double.parseDouble(sgpa1.getText());
+			double s4=Double.parseDouble(sgpa1.getText());
+			double cg=(s1+s2+s3+s4)/4;
+			STUDENT1 ob=new STUDENT1(tname.getText(),tusn.getText(),taddr.getText(),tcat.getText(),Integer.parseInt(tage.getText()),s1,s2,s3,s4,9.0,7.0,8.0,9.0);
+			ob.cgpa=cg;
+			
+			AA.add(ob);
+			
+		
+		}
+		else
+		{
+			
+			f1.setVisible(false);
+			JFrame f2=new JFrame("DISPLAY FRAME");
+			f2.setSize(500, 500);
+			f2.setVisible(true);
+			JTextArea info=new JTextArea(20,20);
+			f2.add(info);
+			for(STUDENT1 ob1:AA)
+			{
+				info.setText(ob1.toString());
+			}
+			
+			//System.out.println(".............perfect............");
+		}
+		
+		
+			
+		
+		// TODO Auto-generated method stub
+		
+	}
+	void check(int i,JTextField sgpa)
+	{
+		if(Double.parseDouble(sgpa.getText())>=10)
+		{
+			//System.out.println("sem "+i+"invalide SGPA");
+			String temp=JOptionPane.showInputDialog(null,"sem "+i+" Enter valid sgpa 0 to 10=");
+			sgpa.setText(temp);
+	
+		}
+	}
+
+}
+4.4.Write a java program using Swings to validate user login information using dialog 
+boxes. 
+a. Once validated, allow the user to enter the customer id, if the person is a new 
+customer, else check whether the customer exists in a collection and obtain the 
+customer id.
+b. The customer id can be obtained given a mobile number. Allow the user to enter 
+the item purchased by giving the item id and quantity purchased.
+c. On clicking of a button, the item name and the total cost should appear in the 
+corresponding GUI components.
+d. Using option dialog box, indicate the types of discount available for the 
+customer. On clicking on the print button, print the details in information dialog 
+box.
+###################################################################################################################
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+
+import javax.swing.*;
+
+public class MARKET implements ActionListener {	
+	JLabel label1= new JLabel("Customer Phone ");
+	JTextField phone=new JTextField(10);
+	JLabel label2= new JLabel("Enter customer id");
+	JTextField cid=new JTextField(10);
+	JButton check=new JButton("Check cid ");
+	JLabel label3= new JLabel("#1  APPLE 150rs/Kg   #2 Orange 60rs/kg");
+	JLabel label4= new JLabel("Enter item Number u to purchase ");
+	JTextField item_no= new JTextField(5);
+	JLabel label5= new JLabel("Quantity kg ");
+	JTextField kg= new JTextField(5);
+	JRadioButton rb1=new JRadioButton("Discount 30%");
+	JButton Bill=new JButton("Bill");
+	JTextField am=new JTextField(20);
+	HashMap<String,Integer> hm=new HashMap<String,Integer>();
+	HashMap<Integer,Double>	item= new HashMap<Integer,Double>();
+	void add_coll()
+	{
+		hm.put("9741278570",121);
+		hm.put("9900726035",122);
+		hm.put("9900001111",123);
+	}
+	void add_item()
+	{
+		item.put(1,150.0);
+		item.put(2,60.0);
+		//hm.put("BANANA",40);
+	}
+	MARKET()
+	{
+		JFrame f1=new JFrame("CUSTOMER INFORMATION");
+		String uname=JOptionPane.showInputDialog(null,"Enter USERNAME=");
+		String psw=JOptionPane.showInputDialog(null,"Enter PASSWORD=");
+		add_coll();
+		add_item();
+		if(uname.equals("msrit123")&& psw.equals("ise123"))
+		{
+			
+			JOptionPane.showMessageDialog(null, "LOGIN VALID");
+			f1.setSize(200,200);
+			f1.setVisible(true);
+			f1.setLayout(new FlowLayout());
+			f1.add(label1);
+			f1.add(phone);
+			f1.add(check);
+			f1.add(label2);
+			f1.add(cid);
+			check.addActionListener(this);
+			f1.add(label3);
+			f1.add(label4);
+			f1.add(item_no);
+			f1.add(label5);
+			f1.add(kg);
+			f1.add(rb1);
+			f1.add(Bill);
+			Bill.addActionListener(this);
+			f1.add(am);
+			
+			
+						
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "LOGIN INVALID");
+		}
+		
+	}
+
+	public static void main(String[] args) {
+		MARKET ob=new MARKET();	
+
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		if(e.getSource()==check)
+		{
+			String p1=phone.getText();
+			if(hm.containsKey(p1))
+			{
+				JOptionPane.showMessageDialog(null, "UR OLD CUSTEMER ID"+hm.get(p1));
+				cid.setText(Integer.toString(hm.get(p1)));
+			}
+			else
+			{
+				hm.put(p1,124);
+				JOptionPane.showMessageDialog(null, "NEW CUSTOMER new id="+"124");
+				cid.setText(Integer.toString(hm.get(p1)));
+			}
+		}
+		else
+		{
+			double amount=150- 150*0.30;
+			am.setText("after discount="+amount);
+			
+		}
+		
+		
+		
+	}
+
+}
+5.
+/*Write a program that uses Java Swing and JDBC to create a stand-alone application:
+i. Create a table namely, 
+a. Customer (CustNo, CustName, State, Credit_Limit, 
+RepNo) in MySQL database. CustNo is the primary key 
+ii. Use appropriate Swing components to insert values in a form.
+iii. Display Customer information when Credit_Limit is above 15,000  */
+
+
+###########################################################################################
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.swing.*;
+
+
+public class swing_JDBC extends JFrame{
+    
+	JLabel clabel=new JLabel("CUSTOMER INFORMATION");
+	JLabel clabel1=new JLabel("CustNo");
+	JLabel clabel2=new JLabel("CustName");
+	JLabel clabel3=new JLabel("State");
+	JLabel clabel4=new JLabel("Credit_Limit");
+	JLabel clabel5=new JLabel("RepNo");
+	JTextField ctext1=new JTextField(20);
+	JTextField ctext2=new JTextField(20);
+	JTextField ctext3=new JTextField(20);
+	JTextField ctext4=new JTextField(20);
+	JTextField ctext5=new JTextField(20);
+	JButton button2=new JButton("Submit");
+	
+	JLabel xlabel=new JLabel("Customer information when Credit_Limit>15000");
+	JButton button3=new JButton("Submit");
+	JTextArea display=new JTextArea();
+	JPanel panel=new JPanel();
+	
+	swing_JDBC()
+	{
+		super("DATA BASE FRAME");
+	}
+	
+	void method2()
+	 {	
+		panel.add(clabel);
+		panel.add(clabel1);
+		panel.add(ctext1);
+		panel.add(clabel2);
+		panel.add(ctext2);
+		panel.add(clabel3);
+		panel.add(ctext3);
+		panel.add(clabel4);
+		panel.add(ctext4);
+		panel.add(clabel5);
+		panel.add(ctext5);
+		
+		panel.add(button2);
+		button2.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try 
+				{
+						Class.forName("com.mysql.cj.jdbc.Driver");					
+						String url = "jdbc:mysql://localhost:3306/msrit";
+						String username = "root";
+						String password = "password";
+						Connection con = DriverManager.getConnection(url, username, password);
+						if (con != null) 
+						{
+							System.out.println("Database Connected successfully");
+						}
+						else
+						{
+				
+							System.out.println("Database Connection failed");
+						}		
+						Statement stm= con.createStatement();
+						ResultSet rs1= stm.executeQuery("select * from Customer ");
+						show2(rs1);
+						String a=ctext1.getText();
+						String b=ctext2.getText();
+						String c=ctext3.getText();
+						
+						String d=ctext4.getText();
+						String x=ctext5.getText(); 
+						
+						String q1="insert into Customer values("+a+",'"+b+"','"+c+"',"+d+","+x+")";
+						stm.executeUpdate(q1);				 						
+						ResultSet rs2= stm.executeQuery("select * from Customer ");
+						show2(rs2);			
+								
+				 }
+				catch(Exception ex)
+				{
+					System.out.println(ex.getStackTrace());
+				}
+			}
+			
+		});
+		//setContentPane(panel);
+	 }
+	void method3()
+	{
+		
+		panel.add(xlabel);
+		panel.add(button3);
+		panel.add(display);
+		
+		button3.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try 
+				{
+					Class.forName("com.mysql.cj.jdbc.Driver");					
+					String url = "jdbc:mysql://localhost:3306/msrit";
+					String username = "root";
+					String password = "password";
+					Connection con = DriverManager.getConnection(url, username, password);
+					if (con != null) 
+					{
+						System.out.println("Database Connected successfully");
+					}
+					else
+					{
+
+						System.out.println("Database Connection failed");
+					}		
+					Statement stm= con.createStatement();					
+					ResultSet rs3= stm.executeQuery("select * from Customer where Credit_Limit>15000");
+					show2(rs3);
+					
+				}
+				catch(Exception ex)
+				{
+					System.out.println(ex.getStackTrace());
+				}
+			}
+		});	
+		setContentPane(panel);
+	}
+	
+	void show2(ResultSet rs)
+	{
+		display.setText(null);
+		display.append("CustNo \t CustName \t State \t Credit_Limit \t RepNo \n");
+		try
+		{
+			while(rs.next())
+			{
+				display.append(rs.getString("CustNo"));
+				display.append("\t");
+				display.append(rs.getString("CustName"));
+				display.append("\t");
+				display.append(rs.getString("State"));
+				display.append("\t");
+				display.append(rs.getString("Credit_Limit"));
+				display.append("\t");
+				display.append(rs.getString("RepNo"));
+				display.append("\n");
+			}
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex.getStackTrace());
+		}
+	}
+	public static void main(String[] args) throws Exception 
+	{
+		
+		swing_JDBC ob=new swing_JDBC();
+		ob.method2();
+		ob.method3();
+		ob.getContentPane().setLayout(new BoxLayout(ob.getContentPane(),BoxLayout.Y_AXIS));
+		ob.setVisible(true);
+		ob.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		ob.pack();
+		
+		
+	}
+}
+
+############################################mysql Customer Table##############################################################
+>mysql -u root -p
+password:password
+mysql>create database msrit;
+mysql> use msrit;
+mysql>create table Customer (CustNo int not null primary key,
+			     CustName varchar(20),
+			     State varchar(20),
+			     Credit_Limit varchar(20),
+			     RepNo varchar(20));
+mysql> select * from customer;
++--------+----------+-------+--------------+-------+
+| CustNo | CustName | State | Credit_Limit | RepNo |
++--------+----------+-------+--------------+-------+
+|    121 | DDD      | Delhi |        40000 |     3 |
+|    122 | LLL      | KAR   |        10000 |     2 |
+|    123 | MMM      | TN    |        20000 |     1 |
+|    124 | KKK      | AP    |        80000 |     5 |
+|    126 | JJJ      | Goa   |        25000 |     5 |
+|    127 | RRR      | AP    |        40000 |    11 |
+|    128 | SSS      | Delhi |        60000 |    12 |
+|    129 | TTT      | RAJ   |        12000 |     7 |
+|    130 | AAA      | NAG   |        18000 |    16 |
+|    131 | PPP      | HAR   |        16000 |    19 |
+|    145 | Himanth  | delhi |        50000 |     2 |
+|    147 | waku     | LA    |        40000 |     3 |
+|    150 | Ganada   | har   |         2000 |     3 |
+|    234 | waku     | yan   |        80000 |     1 |
+|    450 | Ronaldo7 | por   |        45000 |     3 |
++--------+----------+-------+--------------+-------+
+6.
+/*Create a Servlet to file IT returns that accepts personal information, salary information 
+and Tax deduction details from the user. Write the information into a file. Accept the 
+name of the person and display in on the page.*/
+
+
+############################InputData.html################################################
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>INCOME TAX RETURN</title>
+</head>
+<body>
+<form method="get" action="ITRETURNS">
+Enter UR Name:<input type="text" name="name">
+<select name= "gender">
+<option>Male</option>
+<option>Female</option>
+</select>
+Enter UR salary:<input type="text" name="salary">
+Enter UR tax:<input type="text" name="tax">
+<input type="submit"> <input type="reset">
+</form>
+
+</body>
+</html>
+
+
+
+###############################################ITRETURNS.java servelet #########################################################
+
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class ITRETURNS
+ */
+public class ITRETURNS extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    
+    public ITRETURNS() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name=request.getParameter("name");
+		String gender=request.getParameter("gender");
+		String salary=request.getParameter("salary");
+		String tax=request.getParameter("tax");
+		PrintWriter out=response.getWriter();
+		out.println("<h1> Hi,"+name);
+		out.println("<h1> UR SALARY=,"+salary);
+		out.println("<h1> Sorry tax deducted=,"+tax);
+		File fd=new File("C:\\Users\\MALURAJU.D\\Desktop\\Shivananda\\taxdata.txt");
+		fd.createNewFile();
+		FileOutputStream fout= new FileOutputStream(fd);
+		fout.write(("hello"+name+gender+salary+tax).getBytes());
+		fout.close();
+		out.close();
+		
+	}
+
+	
+
+}
+7./*Create a servlet that accepts patient information in a hospital such as patient id, patient 
+name, and age, date of admission, cause of admission, doctor diagnosed, and treatment 
+proposed. Use HTML for front end.
+a. Place the details into a database. Allow options to insert and view the contents 
+in the database.*/
+
+#####################################FRONTEND.html####################################################
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>MSR HOSPITAL </title>
+</head>
+<body>
+<form action="HOSPITAL" method="post">
+		<table>
+		<tr><td> Enter Patient id:<input type="text" name="pid"></td></tr>
+		<tr><td> Enter Patient name:<input type="text" name="pname"></td></tr>
+		<tr><td> Enter Patient age:<input type="text" name="page"></td></tr>
+		<tr><td> Enter Patient date of admission:<input type="date" name="pdate"></td></tr>
+		<tr><td> Enter Patient cause:<input type="text" name="pcause"></td></tr>
+		<tr><td> Enter Doctor name:<input type="text" name="dname"></td></tr>
+		<tr><td> Enter Patient treatment:<input type="text" name="treatment"></td></tr>
+		<tr><td> <input type="submit" ></td></tr>
+		</table>
+	</form>
+</body>
+</html>
+
+#######################################HOSPITAL.java############################################
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class HOSPITAL extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    
+    public HOSPITAL() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String a=request.getParameter("pid");
+		String b=request.getParameter("pname");
+		String c=request.getParameter("page");
+		String d=request.getParameter("pdate");
+		String e=request.getParameter("pcause");
+		String f=request.getParameter("dname");
+		String g=request.getParameter("treatment");
+		PrintWriter out=response.getWriter();
+		out.println("<h1> Patient id:"+a);
+		out.println("<h1> Patient Name:"+b);
+		out.println("<h1> Patient age:"+c);
+		out.println("<h1> Patient date of admission:"+d);
+		out.println("<h1> Patient cause:"+e);
+		out.println("<h1> Doctor name:"+f);
+		out.println("<h1> Treatment Name:"+g);
+		//out.close();
+		try 
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			String url = "jdbc:mysql://localhost:3306/msrit";
+			String username = "root";
+			String password = "password";
+
+			Connection con = DriverManager.getConnection(url, username, password);
+			
+			if (con != null) {
+				out.println("<h1>Database Connected successfully");
+			}
+			else
+			{
+			
+				out.println("Database Connection failed");
+			}		
+			Statement stm= con.createStatement();
+			String q1="insert into hospital values('"+a+"','"+b+"','"+c+"','"+d+"','"+e+"','"+f+"','"+g+"')";
+			stm.executeUpdate(q1);
+			out.println("<h1>----------hospital Table-------------------</h1>");
+			ResultSet rs= stm.executeQuery("select * from hospital");
+			out.println("<h2>PID		PNAME 	PAGE	 PDATE		PCAUSES		DOCTOR  	TREATMENT	</h2>");
+					
+			
+			while(rs.next())
+			{
+					out.println("<h2>"+rs.getInt(1)+"		"+rs.getString(2)+"		"+rs.getString(3)+"   ");
+					out.println(rs.getString(4)+"    "+rs.getString(5)+"    "+rs.getString(6)+"  "+rs.getString(7)+"</h2>");
+			}
+			out.close();
+		}
+		catch(Exception e1)
+		{
+			e1.getStackTrace(); 
+		}
+		
+	}
+	
+
+}
+
+###################################mysql hospital table#####################################################
+mysql> -u root -p
+password:password
+mysql> create database msrit;
+mysql>use hospital;
+mysql>create table hospital(pid int not null primary key, 
+			    pname varchar(20),
+			    page varchar(20),
+			    pdate varchar(20),
+			    pcauses varchar(20),
+			    dname varchar(20),
+			    treatement varchar(20));
+mysql>select * from hospital;
+
++-----+--------+------+------------+--------------+-----------+-------------+
+| pid | pname  | page | pdate      | pcause       | dname     | treatement  |
++-----+--------+------+------------+--------------+-----------+-------------+
+| 111 | Manu   | 45   | 20-03-2023 | malariya     | Dr Manju  | injection   |
+| 121 | TENU   | 30   | 2023-04-07 | Vomiting     | Dr GEETHA | Tablet1     |
+| 122 | KENCHA | 55   | 2023-02-02 | heartAttack  | Dr Cinay  | surgery     |
+| 123 | Leela  | 65   | 2023-04-09 | heartAttack  | Dr Cinay  | surgery3    |
+| 125 | Uppi   | 45   | 2023-04-05 | cancer       | Dr Gowda  | Injection2  |
+| 126 | Janu   | 60   | 2023-04-14 | heartAttack2 | Dr Banu   | Chemotharpy |
++-----+--------+------+------------+--------------+-----------+-------------+
+
+
